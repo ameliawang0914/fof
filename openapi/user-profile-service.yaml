@@ -1,0 +1,129 @@
+openapi: 3.0.3
+info:
+  title: User Profile Service API
+  description: |
+    This module handles all core operations related to user accounts.
+    It supports user registration, records account details, and user preferences.
+    It also keeps track of user type classification, e.g., teacher or learner.
+  version: 1.0.0
+paths:
+  /users:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/{id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The user ID
+      responses:
+        '200':
+          description: User data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      summary: Update user profile by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The user ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User updated successfully
+  /users/{id}/preferences:
+    get:
+      summary: Get user preferences
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The user ID
+      responses:
+        '200':
+          description: Preferences retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferences'
+    put:
+      summary: Update user preferences
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The user ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPreferences'
+      responses:
+        '200':
+          description: Preferences updated successfully
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - name
+        - email
+        - role
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        bio:
+          type: string
+        avatarUrl:
+          type: string
+        role:
+          type: string
+          enum: [learner, teacher]
+        createdAt:
+          type: string
+          format: date-time
+    UserPreferences:
+      type: object
+      properties:
+        language:
+          type: string
+        timezone:
+          type: string
+        notificationsEnabled:
+          type: boolean
